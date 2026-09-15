@@ -1,0 +1,82 @@
+{
+  "auditDate": "2026-09-08",
+  "scope": "Synthetic analytical reproductions; not a SAM benchmark or measured field validation",
+  "sourceHashes": {
+    "lib/simulation.ts": "82687224b89f0214cfd76a2bc18dd0a54f7d16da25ebb14eb8ea2378adfb33c8",
+    "components/workspace.tsx": "f7d94eb1276d3724bb3a006d02e68b2811ca4cf05f7a0c620d3a7cdb2399ae2a"
+  },
+  "findings": {
+    "F1_rolling_contract": {
+      "assumptions": "Jan commissioning; prior 12 monthly peaks equal baseline; no negotiated reset; same unit prices and other fees",
+      "modelAnnualSavingYen": 9191825.105457641,
+      "rollingFirstYearSavingYen": 9037034.11940083,
+      "overstatementYen": 154790.9860568121,
+      "modelBasicSavingYen": 265355.97609739244,
+      "rollingBasicSavingYen": 110564.99004058017,
+      "beforePeakKw": 426.03665286719183,
+      "afterPeakKw": 414.0836809709129,
+      "afterContractKwByMonth": [
+        426.03665286719183,
+        426.03665286719183,
+        426.03665286719183,
+        426.03665286719183,
+        426.03665286719183,
+        426.03665286719183,
+        426.03665286719183,
+        414.0836809709129,
+        414.0836809709129,
+        414.0836809709129,
+        414.0836809709129,
+        414.0836809709129
+      ]
+    },
+    "F2_night_dispatch": {
+      "time": "2025-01-01 01:00 (30-minute interval)",
+      "availableStoredEnergyKwh": 95.91663046625439,
+      "modelDischargeKwh": 0,
+      "feasibleDischargeKwh": 50,
+      "modelImportKw": 300,
+      "feasibleImportKw": 200,
+      "targetKw": 100
+    },
+    "F3_lifetime_scaling": {
+      "assumptions": "Daily one interval: 10 kWh load and 30 kWh AC PV; battery/sales/basic/O&M/replacement/escalation zero; 5% compounded PV degradation",
+      "firstYearSavingYen": 96725,
+      "year20PvKwhPerOccupiedInterval": 11.320608076059218,
+      "modelYear20BenefitYen": 36499.52720522759,
+      "replayYear20BenefitYen": 96725,
+      "understatementYen": 60225.47279477241
+    },
+    "F4_azimuth": {
+      "maxEastWestHalfHourlyDifferenceKwh": 0,
+      "eastAnnualBillSavingYen": 543789.4511643278,
+      "westAnnualBillSavingYen": 543789.4511643278,
+      "horizontalSouthKwh": 339839.9999999992,
+      "horizontalEastKwh": 278668.80000000325,
+      "horizontalAzimuthOnlyReductionPercent": 17.99999999999885,
+      "note": "Demonstrates absent directional timing, not a measured east/west yield forecast"
+    },
+    "F5_incremental_economics": {
+      "assumptions": "Daily 20 kWh midday PV; 10 kWh evening demand; sell 40 yen/kWh; evening buy 26.5 yen/kWh; 92% round-trip efficiency; other recurring costs zero",
+      "extraInvestmentYen": 2400000,
+      "incrementalBillSavingYen": 96725,
+      "incrementalSaleYen": -159928.98487767405,
+      "incrementalNetAnnualValueYen": -63203.984877674055,
+      "displayedBillOnlyPaybackYears": 24.81261307831481,
+      "incrementalNpvYen": -3340315.696098216,
+      "finalStoredEnergyKwh": 29.574279297146262,
+      "boundaryNote": "Uses the current initial empty usable store and unvalued terminal store; these affect the exact annual amount but not the negative-value conclusion"
+    },
+    "F6_imported_profile_sizing": {
+      "smallerPvKw": 100,
+      "largerPvKw": 500,
+      "smallAnnualSavingYen": 8780580.064682879,
+      "largeAnnualSavingYen": 8780580.064682879,
+      "smallInvestmentYen": 7000000,
+      "largeInvestmentYen": 75000000,
+      "smallDeclaredPcsKw": 85,
+      "importedMaxAcKw": 197.3025660440853,
+      "note": "Absolute metered AC profile is valid for its recorded equipment; it must not silently stand for multiple design sizes"
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "checked_at": "2026-09-08",
+  "scope": "Synthetic package feasibility checks; no demand-charge model, no field validation, no UI integration",
+  "python": "3.12.13",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "versions": {
+    "nlr-pysam": "8.0.0",
+    "numpy": "2.5.3",
+    "numpy-financial": "1.0.0"
+  },
+  "checks": {
+    "pv_half_hour_steps": 17520,
+    "pvwatts_single_year_seconds": 0.22843310004100204,
+    "horizontal_azimuth_difference_kw": 0.0,
+    "tilted_east_west_max_difference_kw": 91.42197472471823,
+    "battery_lifetime_steps": 350400,
+    "battery_20_year_seconds": 13.330898500047624,
+    "battery_load_balance_max_error_kw": 4.9993183353080894e-06,
+    "battery_soc_min_percent": 29.999784046933613,
+    "battery_soc_max_percent": 95.00056473664374,
+    "battery_year10_end_capacity_percent": 87.95700557606386,
+    "battery_replacement_years": [
+      12
+    ],
+    "capacity_before_replacement_percent": 87.23544502959341,
+    "capacity_after_replacement_percent": 100.0,
+    "battery_input_sha256": "f3a3d924ec2184c13f832500792eee626f87d1d67181defb1d794ce4de2e0f81",
+    "pvsamv1_pv_only_half_hour_steps": 17520,
+    "pvsamv1_pv_only_single_year_seconds": 3.5419906999450177,
+    "annuity_npv": 29.88430011892456
+  },
+  "not_tested": [
+    "PV lifetime degradation and clipping",
+    "integrated detailed PV-battery lifetime run",
+    "night charging or peak dispatch",
+    "Cashloan / Utilityrate5 Japan parameter mapping",
+    "pvlib or REopt execution",
+    "production latency/concurrency"
+  ]
+}

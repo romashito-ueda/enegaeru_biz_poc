@@ -28,6 +28,15 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
+      - uses: actions/setup-python@v7
+        with:
+          python-version-file: .python-version
+          cache: pip
+          cache-dependency-path: services/engine/requirements.txt
+      - run: python -m pip install -r services/engine/requirements.txt
+      - run: npm run contracts:check
+      - run: npm run fixtures:check
       - run: npm test
+      - run: python -m unittest discover -s services/engine/tests -v
       - run: npm run typecheck
       - run: npm run build

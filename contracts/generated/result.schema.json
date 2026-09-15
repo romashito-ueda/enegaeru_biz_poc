@@ -1,0 +1,1700 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://trace.local/contracts/result/1.0.0",
+  "additionalProperties": false,
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "inputHash",
+    "versions",
+    "scenarioId",
+    "engine",
+    "warnings",
+    "annual",
+    "grossInitialCost",
+    "netInitialCost",
+    "npv",
+    "firstBreakEvenYear",
+    "sustainedRecoveryYear"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0",
+      "type": "string"
+    },
+    "inputHash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "versions": {
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "model",
+        "tariff",
+        "assumptions",
+        "costs",
+        "roofs"
+      ],
+      "properties": {
+        "model": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "tariff": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "assumptions": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "costs": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "roofs": {
+          "minLength": 1,
+          "type": "string"
+        }
+      }
+    },
+    "scenarioId": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "engine": {
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "name",
+        "version"
+      ],
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "version": {
+          "minLength": 1,
+          "type": "string"
+        }
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      }
+    },
+    "annual": {
+      "minItems": 20,
+      "maxItems": 20,
+      "type": "array",
+      "items": {
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "year",
+          "load",
+          "pvGeneration",
+          "gridImport",
+          "gridExport",
+          "selfConsumption",
+          "operatingBenefit",
+          "netCashFlow"
+        ],
+        "properties": {
+          "year": {
+            "minimum": 1,
+            "maximum": 20,
+            "type": "integer"
+          },
+          "load": {
+            "additionalProperties": false,
+            "type": "object",
+            "required": [
+              "value",
+              "unit",
+              "provenance"
+            ],
+            "properties": {
+              "value": {
+                "minimum": 0,
+                "type": "number"
+              },
+              "unit": {
+                "const": "kWh",
+                "type": "string"
+              },
+              "provenance": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "kind",
+                  "source",
+                  "acquisition",
+                  "confirmation",
+                  "period",
+                  "updatedAt"
+                ],
+                "properties": {
+                  "kind": {
+                    "anyOf": [
+                      {
+                        "const": "mock",
+                        "type": "string"
+                      },
+                      {
+                        "const": "assumed",
+                        "type": "string"
+                      },
+                      {
+                        "const": "derived",
+                        "type": "string"
+                      },
+                      {
+                        "const": "observed",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "source": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "acquisition": {
+                    "anyOf": [
+                      {
+                        "const": "embedded",
+                        "type": "string"
+                      },
+                      {
+                        "const": "manual",
+                        "type": "string"
+                      },
+                      {
+                        "const": "imported",
+                        "type": "string"
+                      },
+                      {
+                        "const": "provider",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "confirmation": {
+                    "anyOf": [
+                      {
+                        "const": "unreviewed",
+                        "type": "string"
+                      },
+                      {
+                        "const": "desk_reviewed",
+                        "type": "string"
+                      },
+                      {
+                        "const": "site_verified",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "period": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": [
+                      "start",
+                      "endExclusive"
+                    ],
+                    "properties": {
+                      "start": {
+                        "format": "date-time",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+                        "type": "string"
+                      },
+                      "endExclusive": {
+                        "format": "date-time",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "updatedAt": {
+                    "format": "date-time",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+                    "type": "string"
+                  },
+                  "originalResolutionMinutes": {
+                    "anyOf": [
+                      {
+                        "const": 30,
+                        "type": "number"
+                      },
+                      {
+                        "const": 60,
+                        "type": "number"
+                      }
+                    ]
+                  },
+                  "transformation": {
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                }
+              },
+              "uncertainty": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "min",
+                  "max",
+                  "rationale"
+                ],
+                "properties": {
+                  "min": {
+                    "minimum": 0,
+                    "type": "number"
+                  },
+                  "max": {
+                    "minimum": 0,
+                    "type": "number"
+                  },
+                  "rationale": {
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "pvGeneration": {
+            "additionalProperties": false,
+            "type": "object",
+            "required": [
+              "value",
+              "unit",
+              "provenance"
+            ],
+            "properties": {
+              "value": {
+                "minimum": 0,
+                "type": "number"
+              },
+              "unit": {
+                "const": "kWh",
+                "type": "string"
+              },
+              "provenance": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "kind",
+                  "source",
+                  "acquisition",
+                  "confirmation",
+                  "period",
+                  "updatedAt"
+                ],
+                "properties": {
+                  "kind": {
+                    "anyOf": [
+                      {
+                        "const": "mock",
+                        "type": "string"
+                      },
+                      {
+                        "const": "assumed",
+                        "type": "string"
+                      },
+                      {
+                        "const": "derived",
+                        "type": "string"
+                      },
+                      {
+                        "const": "observed",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "source": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "acquisition": {
+                    "anyOf": [
+                      {
+                        "const": "embedded",
+                        "type": "string"
+                      },
+                      {
+                        "const": "manual",
+                        "type": "string"
+                      },
+                      {
+                        "const": "imported",
+                        "type": "string"
+                      },
+                      {
+                        "const": "provider",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "confirmation": {
+                    "anyOf": [
+                      {
+                        "const": "unreviewed",
+                        "type": "string"
+                      },
+                      {
+                        "const": "desk_reviewed",
+                        "type": "string"
+                      },
+                      {
+                        "const": "site_verified",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "period": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": [
+                      "start",
+                      "endExclusive"
+                    ],
+                    "properties": {
+                      "start": {
+                        "format": "date-time",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+                        "type": "string"
+                      },
+                      "endExclusive": {
+                        "format": "date-time",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "updatedAt": {
+                    "format": "date-time",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+                    "type": "string"
+                  },
+                  "originalResolutionMinutes": {
+                    "anyOf": [
+                      {
+                        "const": 30,
+                        "type": "number"
+                      },
+                      {
+                        "const": 60,
+                        "type": "number"
+                      }
+                    ]
+                  },
+                  "transformation": {
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                }
+              },
+              "uncertainty": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "min",
+                  "max",
+                  "rationale"
+                ],
+                "properties": {
+                  "min": {
+                    "minimum": 0,
+                    "type": "number"
+                  },
+                  "max": {
+                    "minimum": 0,
+                    "type": "number"
+                  },
+                  "rationale": {
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "gridImport": {
+            "additionalProperties": false,
+            "type": "object",
+            "required": [
+              "value",
+              "unit",
+              "provenance"
+            ],
+            "properties": {
+              "value": {
+                "minimum": 0,
+                "type": "number"
+              },
+              "unit": {
+                "const": "kWh",
+                "type": "string"
+              },
+              "provenance": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "kind",
+                  "source",
+                  "acquisition",
+                  "confirmation",
+                  "period",
+                  "updatedAt"
+                ],
+                "properties": {
+                  "kind": {
+                    "anyOf": [
+                      {
+                        "const": "mock",
+                        "type": "string"
+                      },
+                      {
+                        "const": "assumed",
+                        "type": "string"
+                      },
+                      {
+                        "const": "derived",
+                        "type": "string"
+                      },
+                      {
+                        "const": "observed",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "source": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "acquisition": {
+                    "anyOf": [
+                      {
+                        "const": "embedded",
+                        "type": "string"
+                      },
+                      {
+                        "const": "manual",
+                        "type": "string"
+                      },
+                      {
+                        "const": "imported",
+                        "type": "string"
+                      },
+                      {
+                        "const": "provider",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "confirmation": {
+                    "anyOf": [
+                      {
+                        "const": "unreviewed",
+                        "type": "string"
+                      },
+                      {
+                        "const": "desk_reviewed",
+                        "type": "string"
+                      },
+                      {
+                        "const": "site_verified",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "period": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": [
+                      "start",
+                      "endExclusive"
+                    ],
+                    "properties": {
+                      "start": {
+                        "format": "date-time",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+                        "type": "string"
+                      },
+                      "endExclusive": {
+                        "format": "date-time",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "updatedAt": {
+                    "format": "date-time",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+                    "type": "string"
+                  },
+                  "originalResolutionMinutes": {
+                    "anyOf": [
+                      {
+                        "const": 30,
+                        "type": "number"
+                      },
+                      {
+                        "const": 60,
+                        "type": "number"
+                      }
+                    ]
+                  },
+                  "transformation": {
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                }
+              },
+              "uncertainty": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "min",
+                  "max",
+                  "rationale"
+                ],
+                "properties": {
+                  "min": {
+                    "minimum": 0,
+                    "type": "number"
+                  },
+                  "max": {
+                    "minimum": 0,
+                    "type": "number"
+                  },
+                  "rationale": {
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "gridExport": {
+            "additionalProperties": false,
+            "type": "object",
+            "required": [
+              "value",
+              "unit",
+              "provenance"
+            ],
+            "properties": {
+              "value": {
+                "minimum": 0,
+                "type": "number"
+              },
+              "unit": {
+                "const": "kWh",
+                "type": "string"
+              },
+              "provenance": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "kind",
+                  "source",
+                  "acquisition",
+                  "confirmation",
+                  "period",
+                  "updatedAt"
+                ],
+                "properties": {
+                  "kind": {
+                    "anyOf": [
+                      {
+                        "const": "mock",
+                        "type": "string"
+                      },
+                      {
+                        "const": "assumed",
+                        "type": "string"
+                      },
+                      {
+                        "const": "derived",
+                        "type": "string"
+                      },
+                      {
+                        "const": "observed",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "source": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "acquisition": {
+                    "anyOf": [
+                      {
+                        "const": "embedded",
+                        "type": "string"
+                      },
+                      {
+                        "const": "manual",
+                        "type": "string"
+                      },
+                      {
+                        "const": "imported",
+                        "type": "string"
+                      },
+                      {
+                        "const": "provider",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "confirmation": {
+                    "anyOf": [
+                      {
+                        "const": "unreviewed",
+                        "type": "string"
+                      },
+                      {
+                        "const": "desk_reviewed",
+                        "type": "string"
+                      },
+                      {
+                        "const": "site_verified",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "period": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": [
+                      "start",
+                      "endExclusive"
+                    ],
+                    "properties": {
+                      "start": {
+                        "format": "date-time",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+                        "type": "string"
+                      },
+                      "endExclusive": {
+                        "format": "date-time",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "updatedAt": {
+                    "format": "date-time",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+                    "type": "string"
+                  },
+                  "originalResolutionMinutes": {
+                    "anyOf": [
+                      {
+                        "const": 30,
+                        "type": "number"
+                      },
+                      {
+                        "const": 60,
+                        "type": "number"
+                      }
+                    ]
+                  },
+                  "transformation": {
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                }
+              },
+              "uncertainty": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "min",
+                  "max",
+                  "rationale"
+                ],
+                "properties": {
+                  "min": {
+                    "minimum": 0,
+                    "type": "number"
+                  },
+                  "max": {
+                    "minimum": 0,
+                    "type": "number"
+                  },
+                  "rationale": {
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "selfConsumption": {
+            "additionalProperties": false,
+            "type": "object",
+            "required": [
+              "value",
+              "unit",
+              "provenance"
+            ],
+            "properties": {
+              "value": {
+                "minimum": 0,
+                "type": "number"
+              },
+              "unit": {
+                "const": "kWh",
+                "type": "string"
+              },
+              "provenance": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "kind",
+                  "source",
+                  "acquisition",
+                  "confirmation",
+                  "period",
+                  "updatedAt"
+                ],
+                "properties": {
+                  "kind": {
+                    "anyOf": [
+                      {
+                        "const": "mock",
+                        "type": "string"
+                      },
+                      {
+                        "const": "assumed",
+                        "type": "string"
+                      },
+                      {
+                        "const": "derived",
+                        "type": "string"
+                      },
+                      {
+                        "const": "observed",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "source": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "acquisition": {
+                    "anyOf": [
+                      {
+                        "const": "embedded",
+                        "type": "string"
+                      },
+                      {
+                        "const": "manual",
+                        "type": "string"
+                      },
+                      {
+                        "const": "imported",
+                        "type": "string"
+                      },
+                      {
+                        "const": "provider",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "confirmation": {
+                    "anyOf": [
+                      {
+                        "const": "unreviewed",
+                        "type": "string"
+                      },
+                      {
+                        "const": "desk_reviewed",
+                        "type": "string"
+                      },
+                      {
+                        "const": "site_verified",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "period": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": [
+                      "start",
+                      "endExclusive"
+                    ],
+                    "properties": {
+                      "start": {
+                        "format": "date-time",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+                        "type": "string"
+                      },
+                      "endExclusive": {
+                        "format": "date-time",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "updatedAt": {
+                    "format": "date-time",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+                    "type": "string"
+                  },
+                  "originalResolutionMinutes": {
+                    "anyOf": [
+                      {
+                        "const": 30,
+                        "type": "number"
+                      },
+                      {
+                        "const": 60,
+                        "type": "number"
+                      }
+                    ]
+                  },
+                  "transformation": {
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                }
+              },
+              "uncertainty": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "min",
+                  "max",
+                  "rationale"
+                ],
+                "properties": {
+                  "min": {
+                    "minimum": 0,
+                    "type": "number"
+                  },
+                  "max": {
+                    "minimum": 0,
+                    "type": "number"
+                  },
+                  "rationale": {
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "operatingBenefit": {
+            "additionalProperties": false,
+            "type": "object",
+            "required": [
+              "value",
+              "unit",
+              "provenance"
+            ],
+            "properties": {
+              "value": {
+                "type": "number"
+              },
+              "unit": {
+                "const": "JPY",
+                "type": "string"
+              },
+              "provenance": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "kind",
+                  "source",
+                  "acquisition",
+                  "confirmation",
+                  "period",
+                  "updatedAt"
+                ],
+                "properties": {
+                  "kind": {
+                    "anyOf": [
+                      {
+                        "const": "mock",
+                        "type": "string"
+                      },
+                      {
+                        "const": "assumed",
+                        "type": "string"
+                      },
+                      {
+                        "const": "derived",
+                        "type": "string"
+                      },
+                      {
+                        "const": "observed",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "source": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "acquisition": {
+                    "anyOf": [
+                      {
+                        "const": "embedded",
+                        "type": "string"
+                      },
+                      {
+                        "const": "manual",
+                        "type": "string"
+                      },
+                      {
+                        "const": "imported",
+                        "type": "string"
+                      },
+                      {
+                        "const": "provider",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "confirmation": {
+                    "anyOf": [
+                      {
+                        "const": "unreviewed",
+                        "type": "string"
+                      },
+                      {
+                        "const": "desk_reviewed",
+                        "type": "string"
+                      },
+                      {
+                        "const": "site_verified",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "period": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": [
+                      "start",
+                      "endExclusive"
+                    ],
+                    "properties": {
+                      "start": {
+                        "format": "date-time",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+                        "type": "string"
+                      },
+                      "endExclusive": {
+                        "format": "date-time",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "updatedAt": {
+                    "format": "date-time",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+                    "type": "string"
+                  },
+                  "originalResolutionMinutes": {
+                    "anyOf": [
+                      {
+                        "const": 30,
+                        "type": "number"
+                      },
+                      {
+                        "const": 60,
+                        "type": "number"
+                      }
+                    ]
+                  },
+                  "transformation": {
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                }
+              },
+              "uncertainty": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "min",
+                  "max",
+                  "rationale"
+                ],
+                "properties": {
+                  "min": {
+                    "type": "number"
+                  },
+                  "max": {
+                    "type": "number"
+                  },
+                  "rationale": {
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "netCashFlow": {
+            "additionalProperties": false,
+            "type": "object",
+            "required": [
+              "value",
+              "unit",
+              "provenance"
+            ],
+            "properties": {
+              "value": {
+                "type": "number"
+              },
+              "unit": {
+                "const": "JPY",
+                "type": "string"
+              },
+              "provenance": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "kind",
+                  "source",
+                  "acquisition",
+                  "confirmation",
+                  "period",
+                  "updatedAt"
+                ],
+                "properties": {
+                  "kind": {
+                    "anyOf": [
+                      {
+                        "const": "mock",
+                        "type": "string"
+                      },
+                      {
+                        "const": "assumed",
+                        "type": "string"
+                      },
+                      {
+                        "const": "derived",
+                        "type": "string"
+                      },
+                      {
+                        "const": "observed",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "source": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "acquisition": {
+                    "anyOf": [
+                      {
+                        "const": "embedded",
+                        "type": "string"
+                      },
+                      {
+                        "const": "manual",
+                        "type": "string"
+                      },
+                      {
+                        "const": "imported",
+                        "type": "string"
+                      },
+                      {
+                        "const": "provider",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "confirmation": {
+                    "anyOf": [
+                      {
+                        "const": "unreviewed",
+                        "type": "string"
+                      },
+                      {
+                        "const": "desk_reviewed",
+                        "type": "string"
+                      },
+                      {
+                        "const": "site_verified",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "period": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "required": [
+                      "start",
+                      "endExclusive"
+                    ],
+                    "properties": {
+                      "start": {
+                        "format": "date-time",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+                        "type": "string"
+                      },
+                      "endExclusive": {
+                        "format": "date-time",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "updatedAt": {
+                    "format": "date-time",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+                    "type": "string"
+                  },
+                  "originalResolutionMinutes": {
+                    "anyOf": [
+                      {
+                        "const": 30,
+                        "type": "number"
+                      },
+                      {
+                        "const": 60,
+                        "type": "number"
+                      }
+                    ]
+                  },
+                  "transformation": {
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                }
+              },
+              "uncertainty": {
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "min",
+                  "max",
+                  "rationale"
+                ],
+                "properties": {
+                  "min": {
+                    "type": "number"
+                  },
+                  "max": {
+                    "type": "number"
+                  },
+                  "rationale": {
+                    "minLength": 1,
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "grossInitialCost": {
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "value",
+        "unit",
+        "provenance"
+      ],
+      "properties": {
+        "value": {
+          "minimum": 0,
+          "type": "number"
+        },
+        "unit": {
+          "const": "JPY",
+          "type": "string"
+        },
+        "provenance": {
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "kind",
+            "source",
+            "acquisition",
+            "confirmation",
+            "period",
+            "updatedAt"
+          ],
+          "properties": {
+            "kind": {
+              "anyOf": [
+                {
+                  "const": "mock",
+                  "type": "string"
+                },
+                {
+                  "const": "assumed",
+                  "type": "string"
+                },
+                {
+                  "const": "derived",
+                  "type": "string"
+                },
+                {
+                  "const": "observed",
+                  "type": "string"
+                }
+              ]
+            },
+            "source": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "acquisition": {
+              "anyOf": [
+                {
+                  "const": "embedded",
+                  "type": "string"
+                },
+                {
+                  "const": "manual",
+                  "type": "string"
+                },
+                {
+                  "const": "imported",
+                  "type": "string"
+                },
+                {
+                  "const": "provider",
+                  "type": "string"
+                }
+              ]
+            },
+            "confirmation": {
+              "anyOf": [
+                {
+                  "const": "unreviewed",
+                  "type": "string"
+                },
+                {
+                  "const": "desk_reviewed",
+                  "type": "string"
+                },
+                {
+                  "const": "site_verified",
+                  "type": "string"
+                }
+              ]
+            },
+            "period": {
+              "additionalProperties": false,
+              "type": "object",
+              "required": [
+                "start",
+                "endExclusive"
+              ],
+              "properties": {
+                "start": {
+                  "format": "date-time",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+                  "type": "string"
+                },
+                "endExclusive": {
+                  "format": "date-time",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+                  "type": "string"
+                }
+              }
+            },
+            "updatedAt": {
+              "format": "date-time",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+              "type": "string"
+            },
+            "originalResolutionMinutes": {
+              "anyOf": [
+                {
+                  "const": 30,
+                  "type": "number"
+                },
+                {
+                  "const": 60,
+                  "type": "number"
+                }
+              ]
+            },
+            "transformation": {
+              "minLength": 1,
+              "type": "string"
+            }
+          }
+        },
+        "uncertainty": {
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "min",
+            "max",
+            "rationale"
+          ],
+          "properties": {
+            "min": {
+              "minimum": 0,
+              "type": "number"
+            },
+            "max": {
+              "minimum": 0,
+              "type": "number"
+            },
+            "rationale": {
+              "minLength": 1,
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "netInitialCost": {
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "value",
+        "unit",
+        "provenance"
+      ],
+      "properties": {
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "const": "JPY",
+          "type": "string"
+        },
+        "provenance": {
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "kind",
+            "source",
+            "acquisition",
+            "confirmation",
+            "period",
+            "updatedAt"
+          ],
+          "properties": {
+            "kind": {
+              "anyOf": [
+                {
+                  "const": "mock",
+                  "type": "string"
+                },
+                {
+                  "const": "assumed",
+                  "type": "string"
+                },
+                {
+                  "const": "derived",
+                  "type": "string"
+                },
+                {
+                  "const": "observed",
+                  "type": "string"
+                }
+              ]
+            },
+            "source": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "acquisition": {
+              "anyOf": [
+                {
+                  "const": "embedded",
+                  "type": "string"
+                },
+                {
+                  "const": "manual",
+                  "type": "string"
+                },
+                {
+                  "const": "imported",
+                  "type": "string"
+                },
+                {
+                  "const": "provider",
+                  "type": "string"
+                }
+              ]
+            },
+            "confirmation": {
+              "anyOf": [
+                {
+                  "const": "unreviewed",
+                  "type": "string"
+                },
+                {
+                  "const": "desk_reviewed",
+                  "type": "string"
+                },
+                {
+                  "const": "site_verified",
+                  "type": "string"
+                }
+              ]
+            },
+            "period": {
+              "additionalProperties": false,
+              "type": "object",
+              "required": [
+                "start",
+                "endExclusive"
+              ],
+              "properties": {
+                "start": {
+                  "format": "date-time",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+                  "type": "string"
+                },
+                "endExclusive": {
+                  "format": "date-time",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+                  "type": "string"
+                }
+              }
+            },
+            "updatedAt": {
+              "format": "date-time",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+              "type": "string"
+            },
+            "originalResolutionMinutes": {
+              "anyOf": [
+                {
+                  "const": 30,
+                  "type": "number"
+                },
+                {
+                  "const": 60,
+                  "type": "number"
+                }
+              ]
+            },
+            "transformation": {
+              "minLength": 1,
+              "type": "string"
+            }
+          }
+        },
+        "uncertainty": {
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "min",
+            "max",
+            "rationale"
+          ],
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            },
+            "rationale": {
+              "minLength": 1,
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "npv": {
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "value",
+        "unit",
+        "provenance"
+      ],
+      "properties": {
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "const": "JPY",
+          "type": "string"
+        },
+        "provenance": {
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "kind",
+            "source",
+            "acquisition",
+            "confirmation",
+            "period",
+            "updatedAt"
+          ],
+          "properties": {
+            "kind": {
+              "anyOf": [
+                {
+                  "const": "mock",
+                  "type": "string"
+                },
+                {
+                  "const": "assumed",
+                  "type": "string"
+                },
+                {
+                  "const": "derived",
+                  "type": "string"
+                },
+                {
+                  "const": "observed",
+                  "type": "string"
+                }
+              ]
+            },
+            "source": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "acquisition": {
+              "anyOf": [
+                {
+                  "const": "embedded",
+                  "type": "string"
+                },
+                {
+                  "const": "manual",
+                  "type": "string"
+                },
+                {
+                  "const": "imported",
+                  "type": "string"
+                },
+                {
+                  "const": "provider",
+                  "type": "string"
+                }
+              ]
+            },
+            "confirmation": {
+              "anyOf": [
+                {
+                  "const": "unreviewed",
+                  "type": "string"
+                },
+                {
+                  "const": "desk_reviewed",
+                  "type": "string"
+                },
+                {
+                  "const": "site_verified",
+                  "type": "string"
+                }
+              ]
+            },
+            "period": {
+              "additionalProperties": false,
+              "type": "object",
+              "required": [
+                "start",
+                "endExclusive"
+              ],
+              "properties": {
+                "start": {
+                  "format": "date-time",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+                  "type": "string"
+                },
+                "endExclusive": {
+                  "format": "date-time",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+                  "type": "string"
+                }
+              }
+            },
+            "updatedAt": {
+              "format": "date-time",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:[0-5]\\d(Z|[+-]\\d{2}:\\d{2})$",
+              "type": "string"
+            },
+            "originalResolutionMinutes": {
+              "anyOf": [
+                {
+                  "const": 30,
+                  "type": "number"
+                },
+                {
+                  "const": 60,
+                  "type": "number"
+                }
+              ]
+            },
+            "transformation": {
+              "minLength": 1,
+              "type": "string"
+            }
+          }
+        },
+        "uncertainty": {
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "min",
+            "max",
+            "rationale"
+          ],
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            },
+            "rationale": {
+              "minLength": 1,
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "firstBreakEvenYear": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "maximum": 20,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "sustainedRecoveryYear": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "maximum": 20,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  }
+}

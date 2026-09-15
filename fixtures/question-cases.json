@@ -1,0 +1,14 @@
+{
+  "source": "Synthetic decision matrices. Not outputs of a PV model or empirical customer probabilities.",
+  "unit": "JPY",
+  "cases": [
+    { "id": "ranking-changes", "question": "休日操業を確認", "answers": [
+      { "id": "low", "candidates": [{"id":"pv","npv":10000000,"feasible":true},{"id":"battery","npv":8000000,"feasible":true}] },
+      { "id": "high", "candidates": [{"id":"pv","npv":10000000,"feasible":true},{"id":"battery","npv":14000000,"feasible":true}] }
+    ], "expectedWinnerIds": ["pv", "battery"], "expectedGapRange": 6000000 },
+    { "id": "ranking-unchanged", "question": "小さな単価差を確認", "answers": [
+      { "id": "low", "candidates": [{"id":"pv","npv":10000000,"feasible":true},{"id":"battery","npv":8000000,"feasible":true}] },
+      { "id": "high", "candidates": [{"id":"pv","npv":11000000,"feasible":true},{"id":"battery","npv":9000000,"feasible":true}] }
+    ], "expectedWinnerIds": ["pv", "pv"], "expectedGapRange": 0 }
+  ]
+}

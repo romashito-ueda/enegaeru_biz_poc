@@ -13,7 +13,7 @@ from jsonschema import Draft7Validator, FormatChecker
 ROOT = Path(__file__).resolve().parents[3]
 VALIDATORS = {
     name: Draft7Validator(json.loads((ROOT / 'contracts' / 'generated' / f'{name}.schema.json').read_text(encoding='utf-8')), format_checker=FormatChecker())
-    for name in ('input', 'result')
+    for name in ('input', 'result', 'job', 'validationResult')
 }
 
 

@@ -3,11 +3,14 @@ import {
   SimulationInputSchema,
   SimulationResultSchema,
 } from '../contracts/schema.ts';
+import { JobViewSchema, ValidationResultSchema } from '../contracts/jobs.ts';
 const directory = new URL('../contracts/generated/', import.meta.url);
 await mkdir(directory, { recursive: true });
 for (const [name, schema] of Object.entries({
   input: SimulationInputSchema,
   result: SimulationResultSchema,
+  job: JobViewSchema,
+  validationResult: ValidationResultSchema,
 })) {
   const path = new URL(`${name}.schema.json`, directory);
   const content = `${JSON.stringify(

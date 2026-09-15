@@ -1,0 +1,217 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://trace.local/contracts/job/1.0.0",
+  "additionalProperties": false,
+  "type": "object",
+  "required": [
+    "id",
+    "serviceInstanceId",
+    "state",
+    "inputHash",
+    "workerVersion",
+    "modelVersion",
+    "scope",
+    "progress",
+    "createdAt",
+    "finishedAt",
+    "result",
+    "error"
+  ],
+  "properties": {
+    "id": {
+      "pattern": "^[a-f0-9]{32}$",
+      "type": "string"
+    },
+    "serviceInstanceId": {
+      "pattern": "^[a-f0-9]{32}$",
+      "type": "string"
+    },
+    "state": {
+      "anyOf": [
+        {
+          "const": "queued",
+          "type": "string"
+        },
+        {
+          "const": "running",
+          "type": "string"
+        },
+        {
+          "const": "succeeded",
+          "type": "string"
+        },
+        {
+          "const": "failed",
+          "type": "string"
+        },
+        {
+          "const": "cancelled",
+          "type": "string"
+        }
+      ]
+    },
+    "inputHash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "type": "string"
+    },
+    "workerVersion": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "modelVersion": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "scope": {
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "mode",
+        "scenarioIds",
+        "years"
+      ],
+      "properties": {
+        "mode": {
+          "anyOf": [
+            {
+              "const": "validation_only",
+              "type": "string"
+            },
+            {
+              "const": "simulation",
+              "type": "string"
+            }
+          ]
+        },
+        "scenarioIds": {
+          "minItems": 1,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "type": "array",
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "years": {
+          "const": 20,
+          "type": "number"
+        }
+      }
+    },
+    "progress": {
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "fraction",
+        "phase"
+      ],
+      "properties": {
+        "fraction": {
+          "minimum": 0,
+          "maximum": 1,
+          "type": "number"
+        },
+        "phase": {
+          "minLength": 1,
+          "maxLength": 80,
+          "type": "string"
+        }
+      }
+    },
+    "createdAt": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "finishedAt": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "result": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "kind",
+            "intervals",
+            "totalLoadKwh",
+            "scenarioIds",
+            "warnings"
+          ],
+          "properties": {
+            "kind": {
+              "const": "validation_only",
+              "type": "string"
+            },
+            "intervals": {
+              "const": 17520,
+              "type": "number"
+            },
+            "totalLoadKwh": {
+              "minimum": 0,
+              "type": "number"
+            },
+            "scenarioIds": {
+              "minItems": 1,
+              "maxItems": 3,
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "warnings": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "minLength": 1,
+                "type": "string"
+              }
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "error": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "code",
+            "message",
+            "retryable"
+          ],
+          "properties": {
+            "code": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "message": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "retryable": {
+              "type": "boolean"
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  }
+}

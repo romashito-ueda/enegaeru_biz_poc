@@ -1,0 +1,10 @@
+# Direct dependencies. requirements.txt pins the complete Python 3.12 environment.
+jsonschema==4.26.0
+rfc3339-validator==0.1.4
+fastapi==0.141.1
+uvicorn==0.53.0
+nlr-pysam==8.0.0
+numpy==2.5.3
+numpy-financial==1.0.0
+# Starlette 1.6's supported TestClient backend (development/testing).
+httpx2==2.13.0

@@ -17,6 +17,8 @@ npm run dev
 
 新しい計算エンジンの[入出力契約と移行仕様](docs/contracts.md)は、既存画面から独立して検証できます。既存画面への接続はIssue #8で行います。
 
+[PythonジョブAPIの起動・操作](services/engine/README.md)から、入力検証用workerの進捗・キャンセル・再試行を確認できます。APIは別プロセスで起動し、開発画面の `/engine` 経由で接続します。
+
 - `lib/simulation.ts`: 30分×365日の需要・発電・蓄電運転、料金と20年キャッシュフロー
 - `components/workspace.tsx`: 案件、条件保存、3案比較、CSV取込、提案書
 - `components/conditions.tsx`: 基本条件・詳細パネル

@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://trace.local/contracts/validationResult/1.0.0",
+  "additionalProperties": false,
+  "type": "object",
+  "required": [
+    "kind",
+    "intervals",
+    "totalLoadKwh",
+    "scenarioIds",
+    "warnings"
+  ],
+  "properties": {
+    "kind": {
+      "const": "validation_only",
+      "type": "string"
+    },
+    "intervals": {
+      "const": 17520,
+      "type": "number"
+    },
+    "totalLoadKwh": {
+      "minimum": 0,
+      "type": "number"
+    },
+    "scenarioIds": {
+      "minItems": 1,
+      "maxItems": 3,
+      "uniqueItems": true,
+      "type": "array",
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      }
+    },
+    "warnings": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      }
+    }
+  }
+}
